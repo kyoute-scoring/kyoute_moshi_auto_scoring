@@ -1,0 +1,52 @@
+<!-- 教科選択, 入力をプルダウン形式でできるようにする, 個数とか全部の設定はJavaScriptで -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>共通テスト模試自動採点ページ</title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script type="text/javascript" src="script/json_loader.js"></script>
+        <script type="text/javascript" src="script/scoring.js"></script>
+    </head>
+    <body>
+        <!-- どの共通テスト模試か -->
+        <div id="settings">
+            <select id="exams">
+                <option disabled selected value="">選択</option>
+            </select>
+        </div>
+        <!-- 採点するためのプルダウン -->
+        <div id="input_answer">
+            <!-- <div class="subject" id="数学">
+                <h3>数学</h3>
+                <h4>第一問</h4>
+                <ul>
+                    <li>
+                        <span>1</span>
+                        <input type="radio" name="1" value="1" id="1-1"><label for="1-1">1</label>
+                        <input type="radio" name="1" value="2" id="1-2"><label for="1-2">2</label>
+                        <input type="radio" name="1" value="3" id="1-3"><label for="1-3">3</label>
+                        <input type="radio" name="1" value="4" id="1-4"><label for="1-4">4</label>
+                        <input type="radio" name="1" value="5" id="1-5"><label for="1-5">5</label>
+                    </li>
+                    <li>
+                        <span>2</span>
+                        <input type="radio" name="2" value="1" id="2-1"><label for="2-1">1</label>
+                        <input type="radio" name="2" value="2" id="2-2"><label for="2-2">2</label>
+                        <input type="radio" name="2" value="3" id="2-3"><label for="2-3">3</label>
+                        <input type="radio" name="2" value="4" id="2-4"><label for="2-4">4</label>
+                        <input type="radio" name="2" value="5" id="2-5"><label for="2-5">5</label>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+        <!-- 採点するよ確認ボタン -->
+        <div id="confirm">
+            <button id="confirm_btn">採点する</button>
+        </div>
+        <!-- 採点結果 iframeでresultに繋げるのありかも -->
+        <div id="result"></div>
+        <!-- <iframe id="result"></iframe> -->
+    </body>
+</html>
