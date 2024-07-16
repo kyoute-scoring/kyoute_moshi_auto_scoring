@@ -1,5 +1,3 @@
-// 採点: 1個n点, k個m点(順序なし, 順序あり)等いろいろあるの面倒だな
-
 const check_answer = (correct_data, answer_data, answer_ct = 0) => {
     let temp, check;
     check = true;

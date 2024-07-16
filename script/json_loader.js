@@ -1,5 +1,3 @@
-// json読み込んで自動でボタン実装する感じで
-
 let exams = {};
 let exam_data = {};
 
