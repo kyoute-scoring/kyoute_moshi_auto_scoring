@@ -17,10 +17,10 @@
         </div>
         <!-- 採点するためのプルダウン -->
         <div id="input_answer">
-            <!-- <div class="subject" id="数学">
+            <!-- <div class="subject">
                 <h3>数学</h3>
-                <h4>第一問</h4>
-                <ul>
+                <ul class="answer_input" id="数学">
+                    <h4>第一問</h4>
                     <li>
                         <span>1</span>
                         <input type="radio" name="1" value="1" id="1-1"><label for="1-1">1</label>
@@ -42,6 +42,8 @@
         </div>
         <!-- 採点するよ確認ボタン -->
         <div id="confirm">
+            <button id="clear_btn">解答を全て消す</button>
+            <button id="lock_btn">解答をロックする</button>
             <button id="confirm_btn">採点する</button>
         </div>
         <!-- 採点結果 iframeでresultに繋げるのありかも -->

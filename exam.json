@@ -2,5 +2,9 @@
     "サンプル": {
         "json": "sample.json",
         "date": "2024-0710"
+    },
+    "第2回駿台atama+共通テスト模試": {
+        "json": "no2_kyoute.json",
+        "date": "2024-0721"
     }
 }
