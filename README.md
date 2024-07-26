@@ -3,7 +3,7 @@
 
 # 解答の書き方
 [exams/format.md](https://github.com/kyoute-scoring/kyoute_moshi_auto_scoring/blob/main/exams/format.md)にあります。
-かなり雑めに書いてありますので、気になることがあればissueや[Twitter](https://twitter.com/ocha_shiwata?mx=1)のDMにて。
+かなり雑めに書いてありますので、気になることがあればissueにて。
 
 # 小言等
 * 解答をjsonに書くのを禁止されたらこのリポジトリを非公開にします。
