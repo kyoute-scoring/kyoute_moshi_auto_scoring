@@ -1,3 +1,4 @@
+console.log("Json Loader Script Loaded");
 let exams = {};
 let exam_data = {};
 
@@ -48,23 +49,23 @@ const exam_loader = exam_name => {
         Object.keys(exam_data).forEach((subject, subject_ct) => {
             /* 教科ごとに行う */
             subject_data = exam_data[subject];
-            div_content = $("<div>").addClass("subject", subject);
+            div_content = $("<div>").addClass("subject").attr("id", `${subject_ct}_${subject}`);
             // <h3>教科</h3>
             $("<h3>").text(subject).appendTo(div_content);
             // 開閉ボタン
-            $("<button>").text("開く").attr("id", "subject_close").addClass(subject).click(e => {
+            $("<button>").text("開く").addClass("subject_close").click(e => {
                 $(e.target).toggleClass("opened").text( ($(e.target).hasClass("opened")) ? "閉じる" : "開く" )
-                    .next().next().next().fadeToggle(200);
+                $(`ul.${subject}`).fadeToggle(200);
             }).appendTo(div_content);
             // 選択ボタン
-            $("<input>").attr({"type": "checkbox", "id": `select_${subject}`}).addClass(subject).click(e => {
+            $("<input>").attr({"type": "checkbox", "id": `select_${subject}`}).addClass("subject_select").click(e => {
                 if (!$(`button.${subject}`).hasClass("opened") && e.target.checked) { // 閉まってて、チェックされた時
-                    $(e.target).prev().click();
+                    $(`button.subject_close.${subject}`).click();
                 }
             }).appendTo(div_content);
-            $("<label>").attr({"for": `select_${subject}`}).text("この教科を選択する").addClass(subject).appendTo(div_content);
+            $("<label>").attr({"for": `select_${subject}`}).text("この教科を選択する").appendTo(div_content);
             question_ct = 0;
-            list_content = $("<ul>").addClass("answer_input", subject).attr("id", subject);
+            list_content = $("<ul>").addClass("answer_input").attr("id", subject);
             subject_data["順番"].forEach((question, section_ct) => {
                 /* 大問ごとに行う */
                 // <h4>大問</h4>
@@ -92,7 +93,7 @@ const exam_loader = exam_name => {
                 }
             })
             list_content.appendTo(div_content).hide();
-            div_content.appendTo("div#input_answer");
+            div_content.appendTo("div#input_answer").children().addClass(subject);
         })
     })
     .fail(data => {

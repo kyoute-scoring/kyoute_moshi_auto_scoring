@@ -7,6 +7,7 @@
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script type="text/javascript" src="script/json_loader.js"></script>
         <script type="text/javascript" src="script/scoring.js"></script>
+        <script type="text/javascript" src="script/score_storing.js"></script>
     </head>
     <body>
         <!-- どの共通テスト模試か -->
@@ -45,6 +46,11 @@
             <button id="clear_btn">解答を全て消す</button>
             <button id="lock_btn">解答をロックする</button>
             <button id="confirm_btn">採点する</button>
+        </div>
+        <!-- データ保存 -->
+        <div id="store">
+            <button id="save">解答を保存する</button>
+            <button id="load">解答を読み込む</button>
         </div>
         <!-- 採点結果 iframeでresultに繋げるのありかも -->
         <div id="result"></div>

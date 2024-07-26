@@ -1,9 +1,12 @@
+console.log("Scoring Script Loaded");
 const radiobox_color = (radiobox_num, answer_ct, select_txt, color) => {
+    let temp;
     if (!Number.isNaN(radiobox_num)) {
         // console.log(`${radiobox_num}-${answer_ct}-${select_txt}, color: ${color}`)
         $(`input[name="${radiobox_num}-${answer_ct}"]`).each((i, e) => {
-            if ($(e).next().text() == select_txt) {
-                $(e).next().css("backgroundColor", color);
+            temp = $(e).prev();
+            if (temp.text() == select_txt) {
+                temp.css("backgroundColor", color);
             }
         })
     }
@@ -13,6 +16,10 @@ const check_answer = (correct_data, correct_point, answer_data, answer_ct, radio
     let temp, check, point, temp_index;
     point = correct_point;
     check = true;
+    // 空白だったらすぐ終わり
+    // if (answer_data(answer_ct) == undefined) {
+    //     return [false, answer_ct, 0];
+    // }
     // 前の問題参照
     if (correct_data.indexOf("^") != -1) {
         temp = [ correct_data.split("&") ]; // 参照先と、今の答えを分離
@@ -29,7 +36,10 @@ const check_answer = (correct_data, correct_point, answer_data, answer_ct, radio
     }
     // 順序あり完全一致
     else if (correct_data.indexOf(",") != -1) {
-        correct_data.split(",").forEach((nums) => {
+        correct_data.split(",").some((nums) => {
+            if (!check) {
+                return true;
+            }
             // 順序ありの中に、順序なし(ex: 1.2,3,4.5)
             if (nums.indexOf(".") != -1) {
                 temp = check_answer(nums, answer_data, answer_ct, NaN);
@@ -60,7 +70,10 @@ const check_answer = (correct_data, correct_point, answer_data, answer_ct, radio
     // 順序なし完全一致
     else if (correct_data.indexOf(".") != -1) {
         temp = correct_data.split(".");
-        temp.forEach((nums) => {
+        temp.some((nums) => {
+            if (!check) {
+                return true;
+            }
             // チェック
             if (temp.indexOf(String(answer_data(answer_ct))) == -1) {
                 radiobox_color(radiobox_num, answer_ct, answer_data(answer_ct), "red");
@@ -74,7 +87,7 @@ const check_answer = (correct_data, correct_point, answer_data, answer_ct, radio
         })
         answer_ct--;
     }
-    // 順序なし各一致
+    // 順序なし各一致(全探索)
     else if (correct_data.indexOf("/") != -1) {
         check = false;
         point = 0;
@@ -138,6 +151,7 @@ const scoring = () => {
         if (!$(`input[type='checkbox'].${subject}`).prop("checked")) {
             return;
         }
+        // console.log(`scoring: ${subject}`)
         /* 教科ごとに行う */
         subject_data = exam_data[subject];
         res[subject] = 0;
@@ -148,23 +162,24 @@ const scoring = () => {
             subject_data["配点"][question].forEach((correct_point) => {
                 // 部分点
                 temp = [false, 0, 0];
-                correct_point[0].split(";").forEach((correct_num, i, correct_array) => {
-                    if (!temp[0]) {
-                        j = i + 1;
-                        while (correct_point[j] == undefined) {
-                            j--;
-                        }
-                        temp = check_answer(correct_num, correct_point[j], answer_num, answer_ct, `${subject_ct}-${section_ct}`);
-                        // ; のループが終わるか、正解までは、answer_ctを動かさない。
-                        if (temp[0] || i >= correct_array.length - 1) {
-                            res[subject] += temp[2];
-                            answer_ct = temp[1];
-                            // if (temp[2] != 0) {
-                            // }
-                            $("<span>").text(`\t+${temp[2]}`).appendTo( $(`input[name="${subject_ct}-${section_ct}-${answer_ct}"]`).parent() )
-                        }
-                        // console.log(`#${subject_ct}-${section_ct}-${answer_ct}: correct: ${correct_num} / result: ${temp}`);
+                correct_point[0].split(";").some((correct_num, i, correct_array) => {
+                    if (temp[0]) {
+                        return true;
                     }
+                    j = i + 1;
+                    while (correct_point[j] == undefined) {
+                        j--;
+                    }
+                    temp = check_answer(correct_num, correct_point[j], answer_num, answer_ct, `${subject_ct}-${section_ct}`);
+                    // ; のループが終わるか、正解までは、answer_ctを動かさない。
+                    if (temp[0] || i >= correct_array.length - 1) {
+                        res[subject] += temp[2];
+                        answer_ct = temp[1];
+                        // if (temp[2] != 0) {
+                        // }
+                        $("<span>").text(`\t+${temp[2]}`).appendTo( $(`input[name="${subject_ct}-${section_ct}-${answer_ct}"]`).parent() )
+                    }
+                    // console.log(`#${subject_ct}-${section_ct}-${answer_ct}: correct: ${correct_num} / result: ${temp}`);
                 })
                 answer_ct++;
             })
@@ -217,13 +232,14 @@ $(() => {
                 "英国歴公": [["国語", "外国語", "歴公"], 0, 0],
                 "英数理": [["数学", "外国語", "理科"], 0, 0],
             };
-        $("input").next().css("backgroundColor", "")
+        $("label").css("backgroundColor", "")
         scores = scoring();
         list_content = $("<ul>");
         Object.keys(exam_data).forEach((subject) => {
             if (!$(`input[type='checkbox'].${subject}`).prop("checked")) {
                 return;
             }
+            // console.log(`summarize: ${subject}`)
             // 満点
             max_point = 0;
             if (exam_data[subject]["満点"] == undefined) {
@@ -259,7 +275,7 @@ $(() => {
 
     $("button#clear_btn").click(e => {
         if (window.confirm("解答を全て白紙にします。よろしいですか?")) {
-            $("input").prop('checked',false);
+            $("input").prop('checked',false).attr("disabled", false);
         }
     })
 })
